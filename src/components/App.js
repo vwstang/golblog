@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { auth, provider } from "../data/firebase";
+import { auth, provider, userDBRef } from "../data/firebase";
 
 import Header from "./Header";
 import Footer from "./Footer";
@@ -31,11 +31,20 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
 }
 
 class App extends Component {
-  state = { user: null };
+  state = {
+    user: null,
+  };
   
   updateUser = user => this.setState({ user });
 
-  login = () => auth.signInWithPopup(provider).then(res => this.updateUser(res.user));
+  login = () => auth.signInWithPopup(provider).then(res => {
+    this.updateUser(res.user);
+    userDBRef.once("value", snapshot => {
+      if (!snapshot.hasChild(res.user.uid)) {
+        userDBRef.child(res.user.uid).set({ username: res.user.uid });
+      }
+    });
+  });
   
   logout = () => auth.signOut().then(() => {
     this.updateUser(null);
@@ -59,7 +68,7 @@ class App extends Component {
           <Header user={user} login={this.login} logout={this.logout} />
           <Switch>
             <Route exact path="/" render={props => <Home {...props} user={user} />} />
-            <PrivateRoute path="/blogs" user={user} component={Blogs} />
+            <PrivateRoute path="/profile/:user" user={user} component={Blogs} />
             <PrivateRoute path="/post/:postID" user={user} component={Post} />
             <PrivateRoute path="/editblogs" user={user} component={EditBlogs} />
             <PrivateRoute path="/editor/:postID" user={user} component={Editor} />

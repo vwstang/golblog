@@ -1,7 +1,21 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { auth, userDBRef } from "../data/firebase";
 
 class Header extends Component {
+  state = { username: "" };
+
+  componentDidMount = () => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        userDBRef.once("value", snapshot => {
+          const username = snapshot.val()[this.props.user.uid].username;
+          this.setState({ username });
+        });
+      }
+    })
+  }
+  
   render() {
     return (
       <header className="hero-banner">
@@ -10,9 +24,13 @@ class Header extends Component {
             <li className="menu-item">
               <Link to="/" className="menu-link">Home</Link>
             </li>
-            <li className="menu-item">
-              <Link to="/blogs" className="menu-link">Blogs</Link>
-            </li>
+            {
+              this.props.user ?    
+                <li className="menu-item">
+                  <Link to={`/profile/${this.state.username}`} className="menu-link">Blogs</Link>
+                </li> :
+                null
+            }
           </ul>
           <ul className="top-menu">
             {

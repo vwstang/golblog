@@ -23,21 +23,24 @@ class Blogs extends Component {
 
   componentDidMount() {
     // Listen only for changes to the user's list of posts rather than the whole blog node, because if many users make changes at the same time, there's no point refreshing everyone's pages
-    // this.userBlogsDBRef.on("value", snapshot => {
-
-    // })
-    blogDBRef.on("value", snapshot => {
-      this.setState({
-        blogDB: snapshot.val() || {}
-      });
+    this.userBlogsDBRef.once("value", snapshot => {
+      const postList = Object.keys(snapshot.val() || {});
     });
+    // blogDBRef.on("value", snapshot => {
+    //   this.setState({
+    //     blogDB: snapshot.val() || {}
+    //   });
+    // });
   }
 
-  componentWillUnmount() { blogDBRef.off("value") }
+  // componentWillUnmount() { this.userBlogsDBRef.off("value") }
 
   render() {
     return (
       <main className="wrapper">
+        {
+          console.log(this.props.match.params.user)
+        }
         <Link to="/editblogs">Edit Blogs</Link>
         <div className="card-container">
           <ul className="blog-cards">
