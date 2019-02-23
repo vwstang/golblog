@@ -1,25 +1,30 @@
 import React, { Component } from "react";
-import firebase from "../data/firebase";
+import { blogDBRef } from "../data/firebase";
 import swal from "sweetalert";
 
-let db = firebase.database();
+// let db = firebase.database();
 
 class Editor extends Component {
   state = {
     currTitle: "",
-    currDraft: []
+    currContent: [],
+    chgsUnsaved: false
   };
+
+  currPostRef = blogDBRef.child(`/${this.props.match.params.postID}`);
 
   updateDraft = e => {
     switch (e.target.id) {
       case "currTitle":
         this.setState({
-          [e.target.id]: e.target.value
+          [e.target.id]: e.target.value,
+          chgsUnsaved: true
         })
         break;
-      case "currDraft":
+      case "currContent":
         this.setState({
-          [e.target.id]: e.target.value.split("\n")
+          [e.target.id]: e.target.value.split("\n"),
+          chgsUnsaved: true
         })
         break;
       default:
@@ -31,37 +36,40 @@ class Editor extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    db.ref(`/blogs/${this.props.match.params.postID}/title`).set(this.state.currTitle);
-    db.ref(`/blogs/${this.props.match.params.postID}/draft`).set(this.state.currDraft);
+    this.currPostRef.child("/title").set(this.state.currTitle);
+    this.currPostRef.child("/content").set(this.state.currContent);
 
     swal({
       icon: "success",
       text: "Draft saved",
       button: "Thanks!"
     });
+
+    this.setState({ chgsUnsaved: false });
   }
 
-  componentDidMount() {
-    db.ref("/blogs").on("value", snapshot => {
-      const blogDB = snapshot.val();
-      if (blogDB[this.props.match.params.postID].title === "") {
-        blogDB[this.props.match.params.postID].title = "New Blog Post";
-      }
+  componentDidMount = () => {
+    this.currPostRef.on("value", snapshot => {
+      const currPost = snapshot.val();
       this.setState({
-        currTitle: blogDB[this.props.match.params.postID].title,
-        currDraft: blogDB[this.props.match.params.postID].draft
-      })
+        currTitle: currPost.title,
+        currContent: currPost.content
+      });
     });
   }
 
-  componentWillUnmount() {
-    db.ref("/blogs").off("value");
+  componentDidUpdate = () => {
+    
+  }
+
+  componentWillUnmount = () => {
+    this.currPostRef.off("value");
   }
 
   render() {
     return (
       <main className="editor wrapper">
-        <form onSubmit={this.handleSubmit} action="">
+        <form onSubmit={this.handleSubmit}>
           <label
             className="draft-title draft-title--label"
             htmlFor="draftTitle"
@@ -74,10 +82,10 @@ class Editor extends Component {
             onChange={this.updateDraft}
           />
           <textarea
-            id="currDraft"
+            id="currContent"
             className="draft-editor"
             placeholder="What was I up to..."
-            value={this.state.currDraft.join("\n")}
+            value={this.state.currContent.join("\n")}
             onChange={this.updateDraft}
           ></textarea>
           <button

@@ -184,8 +184,6 @@ class EditBlogs extends Component {
       const postList = snapshot.val();
       blogDBRef.once("value", blogSnap => {
         const tempBlogDB = { ...blogSnap.val() };
-        console.log(tempBlogDB);
-        console.log(postList);
         let userBlogDB = {};
         postList.forEach(post => userBlogDB[post] = tempBlogDB[post]);
         this.setState({
