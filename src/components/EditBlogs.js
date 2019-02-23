@@ -108,9 +108,7 @@ class EditBlogs extends Component {
 
     let postList;
     this.currUserDBRef.child("/posts").once("value", snapshot => {
-      postList = snapshot.val() || [];
-      postList.push(newID);
-      console.log(postList);
+      postList = { ...snapshot.val(), [newID]: false };
       this.currUserDBRef.child("/posts").set(postList);
     });
 
@@ -136,7 +134,13 @@ class EditBlogs extends Component {
           icon: "warning"
         }).then(res => {
           if (res) {
-            post.published ? dbPostPublished.set(false) : dbPostPublished.set(true);
+            if (post.published) {
+              dbPostPublished.set(false);
+              this.currUserDBRef.child(`/posts/${postID}`).set(false);
+            } else {
+              dbPostPublished.set(true);
+              this.currUserDBRef.child(`/posts/${postID}`).set(true);
+            }
             swal({
               text: `"${post.title}" was ${confirmMsg}ed successfully.`,
               icon: "success"
@@ -157,7 +161,8 @@ class EditBlogs extends Component {
         }).then(res => {
           if (res) {
             this.currUserDBRef.child("/posts").once("value", snapshot => {
-              const newPostList = snapshot.val().filter(post => post !== postID);
+              const newPostList = { ...snapshot.val() };
+              delete newPostList[postID];
               this.currUserDBRef.child("/posts").set(newPostList);
             });
             blogDBRef.child(`${postID}`).remove();
@@ -181,7 +186,7 @@ class EditBlogs extends Component {
   
   componentDidMount() {
     this.currUserDBRef.child("/posts").on("value", snapshot => {
-      const postList = snapshot.val();
+      const postList = Object.keys(snapshot.val() || {});
       blogDBRef.once("value", blogSnap => {
         const tempBlogDB = { ...blogSnap.val() };
         let userBlogDB = {};

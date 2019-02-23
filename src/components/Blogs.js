@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import firebase from "../data/firebase";
-
-const blogsDBRef = firebase.database().ref("/blogs");
+import { blogDBRef, userDBRef } from "../data/firebase";
 
 
 const BlogCards = (props) => {
@@ -21,15 +19,21 @@ class Blogs extends Component {
     blogDB: {}
   }
 
+  userBlogsDBRef = userDBRef.child(`/${this.props.user.uid}/posts`);
+
   componentDidMount() {
-    blogsDBRef.on("value", snapshot => {
+    // Listen only for changes to the user's list of posts rather than the whole blog node, because if many users make changes at the same time, there's no point refreshing everyone's pages
+    // this.userBlogsDBRef.on("value", snapshot => {
+
+    // })
+    blogDBRef.on("value", snapshot => {
       this.setState({
         blogDB: snapshot.val() || {}
       });
     });
   }
 
-  componentWillUnmount() { blogsDBRef.off("value") }
+  componentWillUnmount() { blogDBRef.off("value") }
 
   render() {
     return (

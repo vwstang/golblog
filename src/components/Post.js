@@ -30,10 +30,12 @@ class Post extends Component {
         {
           this.state.currContent.map((paragraph, i) => {
             return (
-              <p
-                key={`${this.props.match.params.postID}-${i}`}
-                className="post-text"
-              >{paragraph}</p>
+              paragraph === "" ?
+                <br key={`${this.props.match.params.postID}-${i}`}></br> :
+                <p
+                  key={`${this.props.match.params.postID}-${i}`}
+                  className="post-text"
+                >{paragraph}</p>
             )
           })
         }

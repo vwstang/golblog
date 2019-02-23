@@ -59,7 +59,9 @@ class Editor extends Component {
   }
 
   componentDidUpdate = () => {
-    
+    this.state.chgsUnsaved ?
+      console.log("You have unsaved changes, are you sure you want to discard changes?") :
+      console.log("All changes saved.");
   }
 
   componentWillUnmount = () => {
