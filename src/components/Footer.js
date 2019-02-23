@@ -5,7 +5,7 @@ class Footer extends Component {
     return (
       <footer>
         <div className="wrapper">
-          <a href="http://tangible.codes" target="_blank" rel="noopener noreferrer">&copy; TANGible Codes 2018</a>
+          <a href="http://tangible.codes" target="_blank" rel="noopener noreferrer">&copy; TANGible Codes 2019</a>
         </div>
       </footer>
     )

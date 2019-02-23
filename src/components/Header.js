@@ -5,7 +5,7 @@ class Header extends Component {
   render() {
     return (
       <header className="hero-banner">
-        <nav style={{"display":"flex","flexdirection":"row","justifyContent":"space-between"}}>
+        <nav className="navigation wrapper">
           <ul className="top-menu">
             <li className="menu-item">
               <Link to="/" className="menu-link">Home</Link>
@@ -26,6 +26,11 @@ class Header extends Component {
             }
           </ul>
         </nav>
+        <div className={`banner-image banner-image--${this.props.banner}`}>
+          <div className="title-container wrapper">
+            <h1 className="title">{this.props.title}</h1>
+          </div>
+        </div>
       </header>
     )
   }

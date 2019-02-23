@@ -1,21 +1,17 @@
 import React, { Component } from "react";
-import firebase from "../data/firebase";
+import { Link } from "react-router-dom";
 import swal from "sweetalert";
+
+import { blogDBRef, userDBRef } from "../data/firebase";
+
+// Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPrint, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-// Components
-import Header from "./Header";
-import Footer from "./Footer";
-
-// Font Awesome
 library.add(faPrint, faEdit, faTrashAlt);
 
-const dbRefBlogs = firebase.database().ref("/blogs");
 
 class BlogList extends Component {
-  openEditor = e => window.location.href = `/editor/${e.target.id}`;
-
   drawList = () => {
     if (this.props.blogDB) {
       return (
@@ -26,7 +22,7 @@ class BlogList extends Component {
                 {post[1].title}
               </span>
               <span className="blog-list__item__info blog-list__item__info--snippet">
-                {post[1].draft.join(" ").slice(0, 100)}
+                {post[1].content.join(" ").slice(0, 100)}
               </span>
               <span className="blog-list__item__info">
                 {post[1].published ? "Published" : "Draft"}
@@ -42,13 +38,9 @@ class BlogList extends Component {
                 </button>
               </span>
               <span className="blog-list__item__info blog-list__item__info--button">
-                <button
-                  id={post[0]}
-                  className="btn blog-list__item__link"
-                  onClick={this.openEditor}
-                >
+                <Link to={`/editor/${post[0]}`} className="btn blog-list__item__link">
                   <FontAwesomeIcon icon="edit" />
-                </button>
+                </Link>
               </span>
               <span className="blog-list__item__info blog-list__item__info--button">
                 <button
@@ -92,37 +84,40 @@ class BlogList extends Component {
   }
 }
 
+
 class EditBlogs extends Component {
-  constructor() {
-    super();
-    this.state = {
-      blogDB: {}
-    }
-  }
+  state = { blogDB: {} };
+
+  currUserDBRef = userDBRef.child(`/${this.props.user.uid}`);
 
   createNew = () => {
-    let postIDMax = 0;
+    // Deconstruction for easier access
+    const { uid } = this.props.user;
+
+    // Default post values
     const initPost = {
+      author: uid,
       title: "New Blog Post",
-      published: false,
-      draft: [""]
+      content: ["Lorem ipsum"],
+      published: false
     }
 
-    dbRefBlogs.once("value").then(snapshot => {
-      const snapValue = snapshot.val();
-      if (snapValue) {
-        const postsList = Object.keys(snapshot.val());
-        postIDMax = Math.max(...postsList.map(postID => {
-          return parseInt(postID.slice(4));
-        }));
-        dbRefBlogs.child(`post${postIDMax + 1}`).set(initPost);
-      } else {
-        dbRefBlogs.child("post1").set(initPost);
-      }
-      swal({
-        text: "New blog post was created.",
-        icon: "success"
-      })
+    // Blog post ID represented by concatenation of current unix time and user iD
+    const newID = `${Date.now()}${uid}`;
+    blogDBRef.child(newID).set(initPost);
+
+    let postList;
+    this.currUserDBRef.child("/posts").once("value", snapshot => {
+      postList = snapshot.val() || [];
+      postList.push(newID);
+      console.log(postList);
+      this.currUserDBRef.child("/posts").set(postList);
+    });
+
+    // Inform user of successful blog post creation
+    swal({
+      text: "New blog post was created.",
+      icon: "success"
     });
   }
 
@@ -130,11 +125,11 @@ class EditBlogs extends Component {
     const action = e.target.getAttribute("data-action");
     const postID = e.target.id;
     const post = this.state.blogDB[postID];
+
     switch (action) {
       case "publish":
-        const dbPostPublished = dbRefBlogs.child(`${postID}/published`);
+        const dbPostPublished = blogDBRef.child(`${postID}/published`);
         const confirmMsg = post.published ? "unpublish" : "publish";
-
         swal({
           text: `Are you sure you would like to ${confirmMsg} the post "${post.title}"?`,
           buttons: [true, `${confirmMsg}`],
@@ -161,7 +156,11 @@ class EditBlogs extends Component {
           icon: "warning"
         }).then(res => {
           if (res) {
-            dbRefBlogs.child(`${postID}`).remove();
+            this.currUserDBRef.child("/posts").once("value", snapshot => {
+              const newPostList = snapshot.val().filter(post => post !== postID);
+              this.currUserDBRef.child("/posts").set(newPostList);
+            });
+            blogDBRef.child(`${postID}`).remove();
             swal({
               text: `"${post.title}" was deleted.`,
               icon: "success"
@@ -181,23 +180,32 @@ class EditBlogs extends Component {
   }
   
   componentDidMount() {
-    dbRefBlogs.on("value", snapshot => {
-      this.setState({
-        blogDB: snapshot.val()
+    this.currUserDBRef.child("/posts").on("value", snapshot => {
+      const postList = snapshot.val();
+      blogDBRef.once("value", blogSnap => {
+        const tempBlogDB = { ...blogSnap.val() };
+        console.log(tempBlogDB);
+        console.log(postList);
+        let userBlogDB = {};
+        postList.forEach(post => userBlogDB[post] = tempBlogDB[post]);
+        this.setState({
+          blogDB: userBlogDB
+        })
       })
     });
   }
 
+  componentWillUnmount() {
+    this.currUserDBRef.child("/posts").off("value");
+  }
+
   render() {
     return (
-      <div className="page">
-        <BlogList
-          blogDB={this.state.blogDB}
-          performAction={this.performAction}
-          createNew={this.createNew}
-        />
-        <Footer />
-      </div>
+      <BlogList
+        blogDB={this.state.blogDB}
+        performAction={this.performAction}
+        createNew={this.createNew}
+      />
     )
   }
 }

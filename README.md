@@ -1,6 +1,6 @@
-# YiBuRo Blog
+# Golblog
 
-YiBuRo Blog is a *featherweight* blogging platform written in React and stores blog data in Firebase.
+Golblog is a *featherweight* blogging platform written in React and stores blog data in Firebase. It was originally developed under the name "YiBuRo Blog".
 
 Users are currently able to create new blogs, edit its content, publish or unpublish specific blogs, view the blogs, and delete them.
 
@@ -15,4 +15,4 @@ Users are currently able to create new blogs, edit its content, publish or unpub
 * * *
 
 #### Created by Vincent Tang
-[TANGible Codes 2018](http://tangible.codes)
+[TANGible Codes 2019](http://tangible.codes)

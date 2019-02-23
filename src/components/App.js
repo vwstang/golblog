@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import { auth, provider } from "../data/firebase";
 
 import Header from "./Header";
+import Footer from "./Footer";
 import Home from "./Home";
 import Blogs from "./Blogs";
 import Post from "./Post";
@@ -10,6 +11,8 @@ import EditBlogs from "./EditBlogs";
 import Editor from "./EZEditor";
 import NotFound from "./NotFound";
 
+/*** Protected Route ***/
+// Must be authenticated in order to access the rest of the app
 const PrivateRoute = ({ component: Component, user, ...rest }) => {
   return (
     <Route {...rest} render={props => {
@@ -28,9 +31,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
 }
 
 class App extends Component {
-  state = {
-    user: null
-  }
+  state = { user: null };
   
   updateUser = user => this.setState({ user });
 
@@ -54,7 +55,7 @@ class App extends Component {
     const { user } = this.state;
     return (
       <Router>
-        <div>
+        <div className="page">
           <Header user={user} login={this.login} logout={this.logout} />
           <Switch>
             <Route exact path="/" render={props => <Home {...props} user={user} />} />
@@ -64,6 +65,7 @@ class App extends Component {
             <PrivateRoute path="/editor/:postID" user={user} component={Editor} />
             <Route component={NotFound} />
           </Switch>
+          <Footer />
         </div>
       </Router>
     )
