@@ -1,0 +1,55 @@
+.editor {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  
+  & form {
+    width: 100%;
+  }
+}
+
+.draft-title {
+  margin-bottom: 20px;
+
+  &--label {
+    margin-right: 20px;
+  }
+}
+
+.draft-editor {
+  width: 100%;
+  height: 80vh;
+  min-height: 200px;
+  resize: vertical;
+
+  &:active {
+    border: 1px solid steelblue;
+  }
+
+  &:focus {
+    @extend .draft-editor:active;
+  }
+
+  &::placeholder {
+    opacity: 0.5;
+  }
+}
+
+.btn-save {
+  margin-top: 20px;
+}
+
+@media (min-width: $vpminw-mdrnmbl) {
+
+}
+
+@media (min-width: $vpminw-tablet) {
+
+}
+
+@media (min-width: $vpminw-desktop) {
+
+}
+@media (min-width: $vpminw-lrgscrn) {
+
+}

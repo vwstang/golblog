@@ -1,0 +1,126 @@
+$info-spacing-mobile: 55%;
+$btn-spacing-mobile: 45%;
+$info-spacing-tablet: 70%;
+$btn-spacing-tablet: 30%;
+$info-count-mobile: 2;
+$info-count-tablet: 3;
+$btn-count: 3;
+
+.list-header {
+  display: flex;
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+
+  &__item {
+    width: $info-spacing-mobile / $info-count-mobile;
+
+    &--snippet {
+      display: none;
+    }
+
+    &--button {
+      display: flex;
+      justify-content: center;
+      width: $btn-spacing-mobile / $btn-count;
+    }
+  }
+}
+
+.blog-list {
+  display: flex;
+  flex-direction: column;
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid gray;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &__info {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: $info-spacing-mobile / $info-count-mobile;
+      padding-right: 15px;
+
+      &--button {
+        display: flex;
+        justify-content: center;
+        width: $btn-spacing-mobile / $btn-count;
+        padding-right: 0;
+
+        & button {
+          border: none;
+
+          &:hover {
+            border: none;
+          }
+
+          & > svg {
+            position: relative;
+            z-index: -1;
+          }
+        }
+      }
+
+      &--snippet {
+        display: none;
+      }
+    }
+
+    &__link {
+      padding: 0 10px;
+      transition: $link-hover-transitions;
+
+      &:hover {
+        color: var(--link-hover);
+        transition: $link-hover-transitions;
+      }
+    }
+  }
+}
+
+@media (min-width: $vpminw-tablet) {
+  .list-header {
+
+    &__item {
+      width: $info-spacing-tablet / $info-count-tablet;
+      
+      &--snippet {
+        display: flex;
+      }
+
+      &--button {
+        width: $btn-spacing-tablet / $btn-count;
+      }
+    }
+  }
+  
+  .blog-list {
+
+    &__item {
+
+      &__info {
+        width: $info-spacing-tablet / $info-count-tablet;
+
+        &--snippet {
+          display: flex;
+          align-items: center;
+          font-size: 0.8em;
+          color: gray;
+        }
+
+        &--button {
+        width: $btn-spacing-tablet / $btn-count;
+      }
+      }
+    }
+  }
+}
