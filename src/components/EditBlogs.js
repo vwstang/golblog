@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 
-import { blogDBRef, userDBRef } from "../data/firebase";
-
 // Font Awesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+
+import { blogDBRef, userDBRef } from "../data/firebase";
+import helper from "../helper";
+
 library.add(faPrint, faEdit, faTrashAlt);
 
 
@@ -187,14 +189,13 @@ class EditBlogs extends Component {
   componentDidMount() {
     this.currUserDBRef.child("/posts").on("value", snapshot => {
       const postList = Object.keys(snapshot.val() || {});
-      blogDBRef.once("value", blogSnap => {
-        const tempBlogDB = { ...blogSnap.val() };
-        let userBlogDB = {};
-        postList.forEach(post => userBlogDB[post] = tempBlogDB[post]);
-        this.setState({
-          blogDB: userBlogDB
-        })
-      })
+      helper.getUserPosts(postList).then(blogDB => this.setState({ blogDB }));
+      // blogDBRef.once("value", blogSnap => {
+      //   const tempBlogDB = { ...blogSnap.val() };
+      //   let userBlogDB = {};
+      //   postList.forEach(post => userBlogDB[post] = tempBlogDB[post]);
+      //   this.setState({ blogDB: userBlogDB });
+      // })
     });
   }
 
