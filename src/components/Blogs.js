@@ -1,19 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { blogDBRef, userDBRef } from "../data/firebase";
+import { userDBRef } from "../data/firebase";
 import helper from "../helper";
 
-
-const BlogCards = (props) => {
-  return (
-    <li className="blog-card">
-      <Link to={`/post/${props.postID}`}>
-        {props.postTitle}
-      </Link>
-    </li>
-  )
-}
+import BlogCards from "./BlogCards";
 
 
 class Blogs extends Component {
