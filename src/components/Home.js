@@ -39,7 +39,7 @@ class Home extends Component {
         updateFirst = new Promise(resolve => {
           userDBRef.child(`/${this.props.user.uid}/following`).once("value", snapFollowing => resolve(this.setState({
             latestPosts: [],
-            showType: snapFollowing.val(),
+            showType: snapFollowing.val() || [],
             caughtUp: false
           })))
         });

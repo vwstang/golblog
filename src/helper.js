@@ -32,6 +32,7 @@ helper.sortPosts = postList => postList.sort((a, b) => {
 
 helper.getLatestPosts = (lastShownPostID, showType) => {
   return new Promise((resolve, reject) => {
+    console.log(showType, showType.length);
     blogDBRef.once("value", snapBlogNode => {
       let unsortedBlogDB = Object.entries({ ...snapBlogNode.val() }).filter(post => {
         if (showType.length === 0) {
