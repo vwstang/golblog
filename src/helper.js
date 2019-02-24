@@ -2,6 +2,13 @@ import { userDBRef, blogDBRef } from "./data/firebase";
 
 const helper = {};
 
+helper.getUsername = uid => new Promise((resolve) => userDBRef.once("value", snapUserNode => resolve(snapUserNode.val()[uid].username)));
+
+helper.getUID = username => new Promise((resolve, reject) => userDBRef.once("value", snapUserNode => {
+  const userFound = Object.entries(snapUserNode.val() || {}).filter(user => user[1].username === username);
+  userFound.length === 0 ? reject("User not found") : resolve(userFound[0][0]);
+}))
+
 helper.getAllUsernames = () => {
   userDBRef.once("value", snapshot => {
     const allUsers = Object.values(snapshot.val() || {});
@@ -11,16 +18,12 @@ helper.getAllUsernames = () => {
   });
 };
 
-helper.getUserPosts = postList => {
-  return new Promise((resolve, reject) => {
-    blogDBRef.once("value", snapBlogNode => {
-      const blogDB = { ...snapBlogNode.val() };
-      let userBlogDB = {};
-      postList.forEach(post => userBlogDB[post] = blogDB[post]);
-      resolve(userBlogDB);
-    });
-  });
-};
+helper.getUserPosts = postList => new Promise((resolve) => blogDBRef.once("value", snapBlogNode => {
+    const blogDB = { ...snapBlogNode.val() };
+    let userBlogDB = {};
+    postList.forEach(post => userBlogDB[post] = blogDB[post]);
+    resolve(userBlogDB);
+  }));
 
 helper.sortPosts = postList => postList.sort((a, b) => {
   if (a[0] > b[0]) {
@@ -32,7 +35,6 @@ helper.sortPosts = postList => postList.sort((a, b) => {
 
 helper.getLatestPosts = (lastShownPostID, showType) => {
   return new Promise((resolve, reject) => {
-    console.log(showType, showType.length);
     blogDBRef.once("value", snapBlogNode => {
       let unsortedBlogDB = Object.entries({ ...snapBlogNode.val() }).filter(post => {
         if (showType.length === 0) {

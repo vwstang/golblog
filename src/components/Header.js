@@ -27,7 +27,7 @@ class Header extends Component {
             {
               this.props.user ?    
                 <li className="menu-item">
-                  <Link to={`/profile/${this.state.username}`} className="menu-link">Blogs</Link>
+                  <Link to={`/profile/${this.state.username}`} className="menu-link">Profile</Link>
                 </li> :
                 null
             }

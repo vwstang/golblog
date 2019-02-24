@@ -4,30 +4,36 @@ import { Link } from "react-router-dom";
 import { userDBRef } from "../data/firebase";
 import helper from "../helper";
 
+import FollowButton from "./FollowButton";
 import BlogCards from "./BlogCards";
 
 
-class Blogs extends Component {
-  state = {
-    blogDB: {}
-  }
+class Profile extends Component {
+  state = { ownPage: false, blogDB: {} };
 
-  userBlogsDBRef = userDBRef.child(`/${this.props.user.uid}/posts`);
-
-  componentDidMount = () => {
+  updateBlogDB = username => {
     // Listen only for changes to the user's list of posts rather than the whole blog node, because if many users make changes at the same time, there's no point refreshing everyone's pages
-    this.userBlogsDBRef.on("value", userBlogsSnap => {
-      const postList = Object.keys(userBlogsSnap.val() || {});
-      helper.getUserPosts(postList).then(blogDB => this.setState({ blogDB }));
+    helper.getUID(username).then(uid => {
+      const ownPage = this.props.user.uid === uid;
+      userDBRef.child(`/${uid}/posts`).once("value", userBlogsSnap => {
+        const postList = Object.keys(userBlogsSnap.val() || {});
+        helper.getUserPosts(postList).then(blogDB => this.setState({ ownPage, blogDB }));
+      });
     });
   }
 
-  componentWillUnmount() { this.userBlogsDBRef.off("value") }
+  componentWillReceiveProps = newProps => this.updateBlogDB(newProps.match.params.user);
+
+  componentDidMount = () => this.updateBlogDB(this.props.match.params.user);
 
   render() {
     return (
       <main className="wrapper">
-        <Link to="/editblogs">Edit Blogs</Link>
+        {
+          this.state.ownPage ?
+            <Link to="/editblogs">Edit Blogs</Link> :
+            <FollowButton userID={this.props.user.uid} profile={this.props.match.params.user} />
+        }
         <div className="card-container">
           <ul className="blog-cards">
             {
@@ -52,4 +58,4 @@ class Blogs extends Component {
   }
 }
 
-export default Blogs;
+export default Profile;

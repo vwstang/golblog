@@ -5,7 +5,7 @@ import { auth, provider, userDBRef } from "../data/firebase";
 import Header from "./Header";
 import Footer from "./Footer";
 import Home from "./Home";
-import Blogs from "./Blogs";
+import Profile from "./Profile";
 import Post from "./Post";
 import EditBlogs from "./EditBlogs";
 import Editor from "./EZEditor";
@@ -68,7 +68,7 @@ class App extends Component {
           <Header user={user} login={this.login} logout={this.logout} />
           <Switch>
             <Route exact path="/" render={props => <Home {...props} user={user} />} />
-            <PrivateRoute path="/profile/:user" user={user} component={Blogs} />
+            <PrivateRoute path="/profile/:user" user={user} component={Profile} />
             <PrivateRoute path="/post/:postID" user={user} component={Post} />
             <PrivateRoute path="/editblogs" user={user} component={EditBlogs} />
             <PrivateRoute path="/editor/:postID" user={user} component={Editor} />

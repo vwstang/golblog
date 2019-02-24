@@ -79,18 +79,18 @@ class Home extends Component {
   renderHome = () => {
     return (
       <main className="welcome wrapper">
-        <ul style={{"display":"flex"}}>
-          <li>
-            <button
-              id="following"
-              onClick={this.setShowType}
-            >Show Following</button>
-          </li>
+        <ul style={{ "display": "flex" }}>
           <li>
             <button
               id="discover"
               onClick={this.setShowType}
             >Show Discover</button>
+          </li>
+          <li>
+            <button
+              id="following"
+              onClick={this.setShowType}
+            >Show Following</button>
           </li>
           <li>
             <button
