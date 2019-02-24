@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { userDBRef } from "../data/firebase";
 import helper from "../helper";
 
@@ -65,38 +65,18 @@ class Home extends Component {
 
   renderWelcome = () => {
     return (
-      <div>
+      <main className="welcome wrapper">
         <p>Hi there, thanks for stopping by!</p>
         <p>Welcome to Golblog, a <em>featherweight</em> blogging platform where you can create new blogs, edit its content, publish or unpublish specific blogs, view the blogs, as well as delete them.</p>
         <p>Check out the Blogs pages to view your blogs, and edit them using the edit button.</p>
         <p>Thanks and enjoy!</p>
         <br></br>
         <p>Please login with your Google account to continue</p>
-      </div>
+      </main>
     )
   }
 
   renderHome = () => {
-    return (
-      <div className="card-container">
-        <ul className="blog-cards">
-          {
-            this.state.latestPosts.map(post => {
-              return (
-                <BlogCards
-                  key={post[0]}
-                  postID={post[0]}
-                  postTitle={post[1].title}  
-                />
-              )
-            })
-          }
-        </ul>
-      </div>
-    )
-  }
-  
-  render() {
     return (
       <main className="welcome wrapper">
         <ul style={{"display":"flex"}}>
@@ -119,13 +99,35 @@ class Home extends Component {
             >Show Own</button>
           </li>
         </ul>
-        {this.props.user ? this.renderHome() : this.renderWelcome()}
+        <div className="card-container">
+          <ul className="blog-cards">
+            {
+              this.state.latestPosts.map(post => {
+                return (
+                  <BlogCards
+                    key={post[0]}
+                    postID={post[0]}
+                    postTitle={post[1].title}  
+                  />
+                )
+              })
+            }
+          </ul>
+        </div>
         {
           this.state.caughtUp ?
             <p>All caught up!</p> :
             <button style={{"marginTop":"1em"}} onClick={this.getPosts}>Show more</button>
         }
       </main>
+    )
+  }
+  
+  render() {
+    return (
+      <Fragment>
+        {this.props.user ? this.renderHome() : this.renderWelcome()}
+      </Fragment>
     );
   }
 }
