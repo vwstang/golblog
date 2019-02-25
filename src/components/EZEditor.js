@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { blogDBRef } from "../data/firebase";
 import swal from "sweetalert";
 
-// let db = firebase.database();
 
 class Editor extends Component {
   state = {
@@ -44,8 +43,14 @@ class Editor extends Component {
     e.preventDefault();
 
     this.currPostRef.child("/title").set(this.state.currTitle);
-    this.currPostRef.child("/background").set(this.state.currBG);
     this.currPostRef.child("/content").set(this.state.currContent);
+
+    if (this.state.currBG === "") {
+      this.currPostRef.child("/background").set("https://images.unsplash.com/photo-1500444974567-9f77135bd688?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1616&q=80");
+      this.setState({ currBG: "https://images.unsplash.com/photo-1500444974567-9f77135bd688?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1616&q=80" });
+    } else {
+      this.currPostRef.child("/background").set(this.state.currBG);
+    }
 
     swal({
       icon: "success",

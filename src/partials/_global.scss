@@ -1,7 +1,7 @@
 $vpminw-mdrnmbl: 480px;
 $vpminw-tablet: 600px;
 $vpminw-desktop: 900px;
-$vpminw-lrgscrn: 1280px;
+$vpminw-lrgscrn: 1920px;
 
 $wrprtb-mobile: 20px;
 $wrprlr-mobile: 5%;
@@ -63,7 +63,7 @@ p {
   display: flex;
   flex-direction: column;
   min-width: 320px;
-  max-width: 1600px;
+  max-width: $vpminw-lrgscrn;
   min-height: 100vh;
 }
 
@@ -95,7 +95,6 @@ p {
 @media (min-width: $vpminw-lrgscrn) {
   .page {
     margin: 0 auto;
-    border: 1px solid #2c2c2c;
   }
   
   .wrapper {

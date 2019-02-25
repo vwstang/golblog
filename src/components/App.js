@@ -39,6 +39,7 @@ class App extends Component {
 
   login = () => auth.signInWithPopup(provider).then(res => {
     this.updateUser(res.user);
+    console.log("You are now logged in");
     userDBRef.once("value", snapshot => {
       if (!snapshot.hasChild(res.user.uid)) {
         userDBRef.child(res.user.uid).set({ username: res.user.uid });

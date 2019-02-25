@@ -48,6 +48,7 @@ class Profile extends Component {
                     key={post[0]}
                     postID={post[0]}
                     postTitle={post[1].title}
+                    postBG={post[1].background}
                   />
                 )
               })

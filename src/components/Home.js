@@ -111,7 +111,8 @@ class Home extends Component {
                   <BlogCards
                     key={post[0]}
                     postID={post[0]}
-                    postTitle={post[1].title}  
+                    postTitle={post[1].title}
+                    postBG={post[1].background}
                   />
                 )
               })

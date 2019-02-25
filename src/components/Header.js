@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { auth, userDBRef } from "../data/firebase";
+import logo from "../assets/logo.png";
 
 class Header extends Component {
   state = { username: "" };
@@ -22,7 +23,9 @@ class Header extends Component {
         <nav className="navigation wrapper">
           <ul className="top-menu">
             <li className="menu-item">
-              <Link to="/" className="menu-link">Home</Link>
+              <Link to="/" className="menu-link">
+                <img className="menu-link" src={logo} alt=""/>
+              </Link>
             </li>
             {
               this.props.user ?    
