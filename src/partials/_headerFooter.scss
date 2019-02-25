@@ -6,9 +6,7 @@ $title-offset: 8 * -0.8;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 50vh;
-  min-height: 200px;
-  background: var(--hdrftr-bg);
+  // background: var(--hdrftr-bg);
 
   & .banner-image {
     display: flex;
@@ -64,14 +62,13 @@ $title-offset: 8 * -0.8;
 .btn-auth {
   border: none;
   background: none;
-  color: white;
 }
 
 footer {
-  background: var(--hdrftr-bg);
+  // background: var(--hdrftr-bg);
   
   & a {
-    color: #fff;
+    // color: #fff;
     transition: $link-hover-transitions;
 
     &:hover {

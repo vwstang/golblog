@@ -44,11 +44,11 @@ class Header extends Component {
             }
           </ul>
         </nav>
-        <div className={`banner-image banner-image--${this.props.banner}`}>
+        {/* <div className={`banner-image banner-image--${this.props.banner}`}>
           <div className="title-container wrapper">
             <h1 className="title">{this.props.title}</h1>
           </div>
-        </div>
+        </div> */}
       </header>
     )
   }
