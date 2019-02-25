@@ -1,9 +1,31 @@
-.welcome {
+.welcomeBG {
+  position: relative;
+  background: url(./assets/home.jpg) center center / cover no-repeat;
+}
+
+.welcome--loggedout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   & p {
     margin-top: 20px;
-
-    &:first-child {
-      margin-top: 0;
-    }
   }
+}
+
+.btn-showType {
+  margin-left: 10px;
+  border: 0;
+  padding: 0;
+  background: none;
+
+  &:hover {
+    color: var(--link-hover);
+  }
+}
+
+.btn-showMore {
+  border: 0;
+  background: none;
+  margin-top: 1em;
 }

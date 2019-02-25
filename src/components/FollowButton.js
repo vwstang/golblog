@@ -35,8 +35,8 @@ class FollowButton extends Component {
       <Fragment>
         {
           this.state.followed ?
-            <button onClick={this.handleClick}>Unfollow</button> :
-            <button onClick={this.handleClick}>Follow</button>
+            <button className="btn-follow" onClick={this.handleClick}>Unfollow</button> :
+            <button className="btn-follow" onClick={this.handleClick}>Follow</button>
         }
       </Fragment>
     )

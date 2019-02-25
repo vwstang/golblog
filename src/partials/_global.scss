@@ -18,7 +18,7 @@ $button-hover-transitions: border 0.2s, color 0.2s;
 :root {
   --pg-bg: whitesmoke;
   --pg-title: var(--pg-bg);
-  --hdrftr-bg: #2c2c2c;
+  --hdrftr-bg: #000;
   --nav-text: var(--pg-bg);
   --body-text: #000;
   --link-hover: steelblue;
@@ -75,9 +75,6 @@ p {
   text-transform: capitalize;
 }
 
-@media (min-width: $vpminw-mdrnmbl) {
-
-}
 
 @media (min-width: $vpminw-tablet) {
   body {

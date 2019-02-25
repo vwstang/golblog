@@ -64,7 +64,7 @@ class App extends Component {
     const { user } = this.state;
     return (
       <Router>
-        <div className="page">
+        <div className={`page ${this.state.user ? "" : "welcomeBG"}`}>
           <Header user={user} login={this.login} logout={this.logout} />
           <Switch>
             <Route exact path="/" render={props => <Home {...props} user={user} />} />

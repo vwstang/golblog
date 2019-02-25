@@ -99,6 +99,7 @@ class EditBlogs extends Component {
     // Default post values
     const initPost = {
       author: uid,
+      background: "https://images.unsplash.com/photo-1500444974567-9f77135bd688?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1616&q=80",
       title: "New Blog Post",
       content: ["Lorem ipsum"],
       published: false

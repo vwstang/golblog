@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const BlogCards = (props) => {
   return (
-    <li className="blog-card">
-      <Link to={`/post/${props.postID}`}>
-        {props.postTitle}
+    <li className="blogCard">
+      <Link className="blogCard__link" to={`/post/${props.postID}`}>
+        <span className="blogCard__title">{props.postTitle}</span>
       </Link>
     </li>
   )

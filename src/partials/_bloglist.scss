@@ -56,6 +56,19 @@ $btn-count: 3;
         width: $btn-spacing-mobile / $btn-count;
         padding-right: 0;
 
+        & a {
+          border: none;
+          
+          &:hover {
+            border: none;
+          }
+
+          & > svg {
+            position: relative;
+            z-index: -1;
+          }
+        }
+
         & button {
           border: none;
 

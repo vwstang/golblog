@@ -65,8 +65,8 @@ class Home extends Component {
 
   renderWelcome = () => {
     return (
-      <main className="welcome wrapper">
-        <p>Hi there, thanks for stopping by!</p>
+      <main className="welcome--loggedout wrapper">
+        <h1>Golblog</h1>
         <p>Welcome to Golblog, a <em>featherweight</em> blogging platform where you can create new blogs, edit its content, publish or unpublish specific blogs, view the blogs, as well as delete them.</p>
         <p>Check out the Blogs pages to view your blogs, and edit them using the edit button.</p>
         <p>Thanks and enjoy!</p>
@@ -80,23 +80,27 @@ class Home extends Component {
     return (
       <main className="welcome wrapper">
         <ul style={{ "display": "flex" }}>
+          Show:
           <li>
             <button
               id="discover"
+              className="btn-showType"
               onClick={this.setShowType}
-            >Show Discover</button>
+            >Discover</button>
           </li>
           <li>
             <button
               id="following"
+              className="btn-showType"
               onClick={this.setShowType}
-            >Show Following</button>
+            >Following</button>
           </li>
           <li>
             <button
               id="own"
+              className="btn-showType"
               onClick={this.setShowType}
-            >Show Own</button>
+            >Own</button>
           </li>
         </ul>
         <div className="card-container">
@@ -117,7 +121,10 @@ class Home extends Component {
         {
           this.state.caughtUp ?
             <p>All caught up!</p> :
-            <button style={{"marginTop":"1em"}} onClick={this.getPosts}>Show more</button>
+            <button
+              className="btn-showMore"
+              onClick={this.getPosts}
+            >Show more</button>
         }
       </main>
     )

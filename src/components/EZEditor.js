@@ -7,6 +7,7 @@ import swal from "sweetalert";
 class Editor extends Component {
   state = {
     currTitle: "",
+    currBG: "",
     currContent: [],
     chgsUnsaved: false
   };
@@ -21,6 +22,11 @@ class Editor extends Component {
           chgsUnsaved: true
         })
         break;
+      case "currBG":
+        this.setState({
+          [e.target.id]: e.target.value,
+          chgsUnsaved: true
+        })
       case "currContent":
         this.setState({
           [e.target.id]: e.target.value.split("\n"),
@@ -37,6 +43,7 @@ class Editor extends Component {
     e.preventDefault();
 
     this.currPostRef.child("/title").set(this.state.currTitle);
+    this.currPostRef.child("/background").set(this.state.currBG);
     this.currPostRef.child("/content").set(this.state.currContent);
 
     swal({
@@ -53,6 +60,7 @@ class Editor extends Component {
       const currPost = snapshot.val();
       this.setState({
         currTitle: currPost.title,
+        currBG: currPost.background,
         currContent: currPost.content
       });
     });
@@ -81,6 +89,17 @@ class Editor extends Component {
             className="draft-title"
             type="text"
             value={this.state.currTitle}
+            onChange={this.updateDraft}
+          />
+          <label
+            className="draft-title draft-title--label"
+            htmlFor="draftTitle"
+          >Featured Image</label>
+          <input
+            id="currBG"
+            className="draft-title"
+            type="text"
+            value={this.state.currBG}
             onChange={this.updateDraft}
           />
           <textarea

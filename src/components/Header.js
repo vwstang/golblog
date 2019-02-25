@@ -36,7 +36,12 @@ class Header extends Component {
             {
               this.props.user ?
                 <li className="menu-item">
-                  <button className="btn-auth" onClick={this.props.logout}>Logout</button>
+                  <button
+                    className="btn-auth"
+                    onClick={this.props.logout}
+                  >
+                    <img className="userPhoto" src={this.props.user.photoURL} alt="" />Logout
+                  </button>
                 </li> :
                 <li className="menu-item">
                   <button className="btn-auth" onClick={this.props.login}>Login</button>

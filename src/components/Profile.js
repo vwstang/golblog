@@ -28,7 +28,8 @@ class Profile extends Component {
 
   render() {
     return (
-      <main className="wrapper">
+      <main className="profile wrapper">
+        <h2 className="profile__title">{this.props.match.params.user}</h2>
         {
           this.state.ownPage ?
             <Link to="/editblogs">Edit Blogs</Link> :
