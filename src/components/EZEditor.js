@@ -20,18 +20,19 @@ class Editor extends Component {
         this.setState({
           [e.target.id]: e.target.value,
           chgsUnsaved: true
-        })
+        });
         break;
       case "currBG":
         this.setState({
           [e.target.id]: e.target.value,
           chgsUnsaved: true
-        })
+        });
+        break;
       case "currContent":
         this.setState({
           [e.target.id]: e.target.value.split("\n"),
           chgsUnsaved: true
-        })
+        });
         break;
       default:
         console.log("This code should not be run.");
