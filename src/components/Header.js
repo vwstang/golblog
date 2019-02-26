@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { userDBRef } from "../data/firebase";
 import helper from "../helper";
 import logo from "../assets/logo.png";
 
