@@ -1,12 +1,12 @@
 .welcomeBG {
   position: relative;
-  background: url(./assets/home.jpg) center center / cover no-repeat;
+  background: url(./assets/home2.jpg) center center / cover no-repeat;
 }
 
 .welcome--loggedout {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
 
   & p {
     margin-top: 20px;

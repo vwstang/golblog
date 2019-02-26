@@ -2,7 +2,12 @@ import { userDBRef, blogDBRef } from "./data/firebase";
 
 const helper = {};
 
-helper.getUsername = uid => new Promise((resolve) => userDBRef.once("value", snapUserNode => resolve(snapUserNode.val()[uid].username)));
+helper.getUsername = uid => new Promise((resolve, reject) => userDBRef.once("value", snapUserNode => {
+  if (snapUserNode.val()[uid]) {
+    resolve(snapUserNode.val()[uid].username);
+  }
+  reject(uid);
+}));
 
 helper.getUID = username => new Promise((resolve, reject) => userDBRef.once("value", snapUserNode => {
   const userFound = Object.entries(snapUserNode.val() || {}).filter(user => user[1].username === username);

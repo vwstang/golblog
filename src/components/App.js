@@ -32,7 +32,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
 
 class App extends Component {
   state = {
-    user: null,
+    user: null
   };
   
   updateUser = user => this.setState({ user });

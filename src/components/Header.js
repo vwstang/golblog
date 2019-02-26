@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { auth, userDBRef } from "../data/firebase";
+import { userDBRef } from "../data/firebase";
+import helper from "../helper";
 import logo from "../assets/logo.png";
 
 class Header extends Component {
   state = { username: "" };
 
-  componentDidMount = () => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        userDBRef.once("value", snapshot => {
-          const username = snapshot.val()[this.props.user.uid].username;
-          this.setState({ username });
-        });
-      }
-    })
+  componentWillReceiveProps = newProps => {
+    if (newProps.user) {
+      helper.getUsername(newProps.user.uid).then(
+        username => this.setState({ username }),
+        uid => this.setState({ username: uid }) // This is to account for the scenario where it is the user's very first time logging in, but because state change at App level is faster than setting a new user node in firebase, the Header component renders the profile link before the firebase node exists, thus resulting in a blank page leading to the NotFound component .
+      );
+    }
   }
   
   render() {
@@ -52,11 +51,6 @@ class Header extends Component {
             }
           </ul>
         </nav>
-        {/* <div className={`banner-image banner-image--${this.props.banner}`}>
-          <div className="title-container wrapper">
-            <h1 className="title">{this.props.title}</h1>
-          </div>
-        </div> */}
       </header>
     )
   }
