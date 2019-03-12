@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import helper from "../helper";
 import logo from "../assets/logo.png";
@@ -44,9 +44,14 @@ class Header extends Component {
                     <img className="userPhoto" src={this.props.user.photoURL} alt="" />Logout
                   </button>
                 </li> :
-                <li className="menu-item">
-                  <button className="btn-auth" onClick={this.props.login}>Login</button>
-                </li>
+                <Fragment>
+                  <li className="menu-item">
+                    <button id="guestLogin" className="btn-auth" onClick={this.props.login}>Guest</button>
+                  </li>
+                  <li className="menu-item">
+                    <button id="googleLogin" className="btn-auth" onClick={this.props.login}>Login</button>
+                  </li>
+                </Fragment>
             }
           </ul>
         </nav>

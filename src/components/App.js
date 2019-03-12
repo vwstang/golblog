@@ -37,15 +37,37 @@ class App extends Component {
   
   updateUser = user => this.setState({ user });
 
-  login = () => auth.signInWithPopup(provider).then(res => {
-    this.updateUser(res.user);
-    console.log("You are now logged in");
-    userDBRef.once("value", snapshot => {
-      if (!snapshot.hasChild(res.user.uid)) {
-        userDBRef.child(res.user.uid).set({ username: res.user.uid });
-      }
-    });
-  });
+  login = e => {
+    switch (e.target.id) {
+      case "guestLogin":
+        const guestUser = {
+          uid: "guestUser007",
+          photoURL: "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
+        }
+        this.updateUser(guestUser);
+        console.log("You are now logged in as Guest");
+        userDBRef.once("value", snapshot => {
+          if (!snapshot.hasChild(guestUser.uid)) {
+            userDBRef.child(guestUser.uid).set({ username: guestUser.uid });
+          }
+        });
+        break;
+      case "googleLogin":
+        auth.signInWithPopup(provider).then(res => {
+          this.updateUser(res.user);
+          console.log("You are now logged in");
+          userDBRef.once("value", snapshot => {
+            if (!snapshot.hasChild(res.user.uid)) {
+              userDBRef.child(res.user.uid).set({ username: res.user.uid });
+            }
+          });
+        });
+        break;
+      default:
+        console.log("This code should never run");
+        break;
+    }
+  };
   
   logout = () => auth.signOut().then(() => {
     this.updateUser(null);
