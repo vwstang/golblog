@@ -1,7 +1,9 @@
 .post {
 
   &__title {
+    max-width: 100%;
     font-size: 5rem;
+    word-wrap: break-word;
   }
 
   &__details {
